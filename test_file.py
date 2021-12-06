@@ -1,18 +1,23 @@
+import json
+
 import requests
-from assertpy import assert_that
 
 from payLoads.payLoad import *
-from utilities.resources import *
-
 from utilities.configurations import *
 
 config = getConfig()
 
 url = config['API']['endpoint']
-headers = {'Content-Type': 'application/json'}
+headers = {"Content-Type": "application/json",
+           "Accept": "application/json"
+           }
 
-registerMerchant_response = requests.post(url, registerMerchantPayload(), headers=headers)
+registerMerchant_response = requests.post(url, data=json.dumps(registerMerchantPayload(10), indent=4), headers=headers)
+# import pdb
+# pdb.set_trace()
 
-status_code = registerMerchant_response.status_code
 
-assert_that(status_code).is_equal_to(200)
+print(registerMerchant_response.json())
+print(registerMerchant_response.json()["Transaction"]["ResponseCode"])
+
+
