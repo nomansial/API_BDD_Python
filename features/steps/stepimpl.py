@@ -10,78 +10,37 @@ from utilities.configurations import *
 config = getConfig()
 
 
-@given(u'user basic information is provided')
+@given(u'API headers are provided')
 def step_impl(context):
     context.url = config['API']['endpoint']
+    context.userName = config['Credentials']['userName']
+    context.passWord = config['Credentials']['passWord']
     context.headers = {"Content-Type": "application/json",
                        "Accept": "application/json"
                        }
 
 
-@when(u'user executed API with {amount}')
-def step_impl(context, amount):
+@when(
+    u'User executed API with {Currency} {OrderName} {order_info} and {return_Path} {orderID} {extraData} with {'
+    u'Channel} {Amount} {transactionHint} {Customer}')
+def step_impl(context, Currency, OrderName, order_info, return_Path, orderID, extraData, Channel, Amount,
+              transactionHint, Customer):
+    user_name = context.userName
+    password = context.passWord
+
     context.registerMerchant_response = requests.post(context.url,
-                                                      data=json.dumps(registerMerchantPayload(amount), indent=4),
+                                                      data=json.dumps(
+                                                          registerMerchant(Currency, OrderName, order_info, return_Path,
+                                                                           orderID, extraData, Channel, Amount,
+                                                                           transactionHint, Customer, user_name,
+                                                                           password), indent=4),
                                                       headers=context.headers)
-    context.status_code = context.registerMerchant_response.json()["Transaction"]["ResponseCode"]
+
+    context.generated_response_code = context.registerMerchant_response.json()["Transaction"]["ResponseCode"]
+
+    print(context.registerMerchant_response.text)
 
 
 @then(u'status code is returned')
 def step_impl(context):
-    assert_that(context.status_code).is_equal_to("0")
-
-
-@when(u'run API with {extraData}')
-def step_impl(context, extraData):
-    context.registerMerchant_response = requests.post(context.url,
-                                                      data=json.dumps(registerMerchantExtraData(extraData), indent=4),
-                                                      headers=context.headers)
-    context.status_code = context.registerMerchant_response.json()["Transaction"]["ResponseCode"]
-
-
-@when(u'when {channel} is provided')
-def step_impl(context, channel):
-    context.registerMerchant_response = requests.post(context.url,
-                                                      data=json.dumps(registerWithChannel(channel), indent=4),
-                                                      headers=context.headers)
-    context.status_code = context.registerMerchant_response.json()["Transaction"]["ResponseCode"]
-
-
-@when(u'{currency} type is provided')
-def step_impl(context, currency):
-    context.registerMerchant_response = requests.post(context.url,
-                                                      data=json.dumps(currencyProvided(currency), indent=4),
-                                                      headers=context.headers)
-    context.status_code = context.registerMerchant_response.json()["Transaction"]["ResponseCode"]
-
-
-@when(u'return {path} is give to the request')
-def step_impl(context, path):
-    context.registerMerchant_response = requests.post(context.url,
-                                                      data=json.dumps(returnPath(path), indent=4),
-                                                      headers=context.headers)
-    context.status_code = context.registerMerchant_response.json()["Transaction"]["ResponseCode"]
-
-
-@when(u'{customer} is added for the order')
-def step_impl(context, customer):
-    context.registerMerchant_response = requests.post(context.url,
-                                                      data=json.dumps(customerName(customer), indent=4),
-                                                      headers=context.headers)
-    context.status_code = context.registerMerchant_response.json()["Transaction"]["ResponseCode"]
-
-
-@when(u'{order} is provided')
-def step_impl(context, order):
-    context.registerMerchant_response = requests.post(context.url,
-                                                      data=json.dumps(orderName(order), indent=4),
-                                                      headers=context.headers)
-    context.status_code = context.registerMerchant_response.json()["Transaction"]["ResponseCode"]
-
-
-@when(u'certificate {password} is entered')
-def step_impl(context, password):
-    context.registerMerchant_response = requests.post(context.url,
-                                                      data=json.dumps(registerPassword(password), indent=4),
-                                                      headers=context.headers)
-    context.status_code = context.registerMerchant_response.json()["Transaction"]["ResponseCode"]
+    assert_that(context.generated_response_code).is_equal_to("0")
