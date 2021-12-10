@@ -37,6 +37,7 @@ def step_impl(context, Currency, OrderName, order_info, return_Path, orderID, ex
                                                       headers=context.headers)
 
     context.generated_response_code = context.registerMerchant_response.json()["Transaction"]["ResponseCode"]
+    context.generated_response_class = context.registerMerchant_response.json()["Transaction"]["ResponseClass"]
 
     print(context.registerMerchant_response.text)
 
@@ -44,3 +45,4 @@ def step_impl(context, Currency, OrderName, order_info, return_Path, orderID, ex
 @then(u'status code is returned')
 def step_impl(context):
     assert_that(context.generated_response_code).is_equal_to("0")
+    assert_that(context.generated_response_class).is_equal_to("0")
