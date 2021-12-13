@@ -45,4 +45,17 @@ def step_impl(context, Currency, OrderName, order_info, return_Path, orderID, ex
 @then(u'status code is returned')
 def step_impl(context):
     assert_that(context.generated_response_code).is_equal_to("0")
-    assert_that(context.generated_response_class).is_equal_to("0")
+
+
+@when(u'{Version} provided {Language} selected {Port} number {AddressIP} selected {ServerIP} with {ServerPort} and {'
+      u'Machine} for {Channel} and {TransactionID}')
+def step_impl(context, Version, Language, Port, AddressIP, ServerIP, ServerPort, Machine, Channel, TransactionID):
+    user_name = context.userName
+    password = context.passWord
+
+    context.paymentQueryResponse = requests.post(context.url, data=json.dumps(
+        paymentQuery(Version, Language, Port, AddressIP, ServerIP, ServerPort, Machine, Channel, TransactionID,
+                     user_name, password), indent=4), headers=context.headers)
+
+    context.generated_response_code = context.paymentQueryResponse.json()["PaymentData"]["ResponseCode"]
+    print(context.paymentQueryResponse.text)
