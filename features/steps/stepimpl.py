@@ -59,3 +59,23 @@ def step_impl(context, Version, Language, Port, AddressIP, ServerIP, ServerPort,
 
     context.generated_response_code = context.paymentQueryResponse.json()["PaymentData"]["ResponseCode"]
     print(context.paymentQueryResponse.text)
+
+
+@when(u'{Port} and {clientIp} along {Identifier} with {ServerIP} and {ServerPort} and {machine} with {url} when {'
+      u'lang} is {channel} then {transactionId} can be {amount} and {currency} so that {instrument} some with {'
+      u'cardnumber} year {year} month {month} code {code} and the {purchaseAmount} along {purchaseExponent} and {'
+      u'purchaseDate} with {merchantName}')
+def step_impl(context, clientPort, clientIp, Identifier, ServerIP, ServerPort, machine, url, language, channel,
+              transactionId, amount, currency, instrument, cardnumber, year, month, code,
+              purchaseAmount, purchaseExponent, purchaseDate, merchantName):
+    userName = context.userName
+    password = context.passWord
+
+    context.preAuthenticateResponse = requests.post(context.url, data=json.dumps(
+        preAuthenticate(clientPort, clientIp, Identifier, ServerIP, ServerPort, machine, url, language, channel,
+                        transactionId, amount, userName, password, currency, instrument, cardnumber, year, month, code,
+                        purchaseAmount, purchaseExponent, purchaseDate, merchantName), indent=4),
+                                                    headers=context.headers)
+
+    context.generated_response_code = context.preAuthenticateResponse.json()["Transaction"]["ResponseCode"]
+    print(context.paymentQueryResponse.text)
