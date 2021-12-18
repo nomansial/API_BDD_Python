@@ -141,3 +141,17 @@ def preAuthenticate(clientPort, clientIp, Identifier, ServerIP, ServerPort, mach
     }
 
     return body
+
+
+def finalize(customerName, lang, transactionID, username, password):
+    body = {
+        "Finalization": {
+            "Customer": customerName,
+            "Language": lang,
+            "TransactionID": transactionID,
+            "Password": password,
+            "UserName": username
+        }
+    }
+
+    return body

@@ -25,12 +25,17 @@ registerMerchant_response = requests.post(url, data=json.dumps(preAuthenticate("
                                                                                "BBC51CD1-8DB7-4DC3-A285-A3DC428A73C0",
                                                                                "195.229.84.28", "443", "EPG-MS-SET-I",
                                                                                "/DevPaymentEx/MerchantPay"
-                                                                               "/GetPreAuthData",
-                                                                               "En", "Web", "250384623618", "10",
-                                                                               "Imtiaz", "ProgramProgram99", "AED", "C",
-                                                                               "4111111111111111", "2022", "02", "123",
-                                                                               "10", "2", "20211214125651",
-                                                                               "Demo Merchant New"), indent=4), headers=headers)
+                                                                               "/GetPreAuthData", "En", "Web",
+                                                                               "250384623618", "10", "Imtiaz",
+                                                                               "ProgramProgram99", "AED", "C",
+                                                                               "4111111111111111",
+                                                                               "2022", "02", "123", "10", "2",
+                                                                               "20211214125651", "Demo Merchant New"),
+                                                               indent=4), headers=headers)
 
-print(registerMerchant_response.json())
-print("Response Code is " + registerMerchant_response.json()["Transaction"]["ResponseCode"])
+# registerMerchant_response = requests.post(url, data=json.dumps(finalize("Demo Merchant", "en", "216063158375",
+# "Imtiaz", "ProgramProgram99"), indent=4), headers=headers)
+
+
+print("Description: " + registerMerchant_response.json()["Transaction"]["ResponseDescription"])
+print("Response Code:  " + registerMerchant_response.json()["Transaction"]["ResponseCode"])

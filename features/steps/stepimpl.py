@@ -37,9 +37,9 @@ def step_impl(context, Currency, OrderName, order_info, return_Path, orderID, ex
                                                       headers=context.headers)
 
     context.generated_response_code = context.registerMerchant_response.json()["Transaction"]["ResponseCode"]
-    context.generated_response_class = context.registerMerchant_response.json()["Transaction"]["ResponseClass"]
 
-    print(context.registerMerchant_response.text)
+    print("Register API Description: " + context.registerMerchant_response.json()["Transaction"]["ResponseDescription"])
+    print("Register API Response Code:  " + context.registerMerchant_response.json()["Transaction"]["ResponseCode"])
 
 
 @then(u'status code is returned')
@@ -58,7 +58,11 @@ def step_impl(context, Version, Language, Port, AddressIP, ServerIP, ServerPort,
                      user_name, password), indent=4), headers=context.headers)
 
     context.generated_response_code = context.paymentQueryResponse.json()["PaymentData"]["ResponseCode"]
-    print(context.paymentQueryResponse.text)
+
+    print("Payment Page Query API Description: " + context.paymentQueryResponse.json()["PaymentData"]["Response"
+                                                                                                      "Description"])
+    print("Payment Page Query API Response Code:  " + context.paymentQueryResponse.json()["PaymentData"]["Response"
+                                                                                                         "Code"])
 
 
 @when(u'{Port} and {clientIp} along {Identifier} with {ServerIP} and {ServerPort} and {machine} with {url} when {'
@@ -78,4 +82,23 @@ def step_impl(context, clientPort, clientIp, Identifier, ServerIP, ServerPort, m
                                                     headers=context.headers)
 
     context.generated_response_code = context.preAuthenticateResponse.json()["Transaction"]["ResponseCode"]
-    print(context.paymentQueryResponse.text)
+
+    print(
+        "Pre Authenticate Description: " + context.preAuthenticateResponse.json()["Transaction"]["ResponseDescription"])
+    print("Pre Authenticate Response Code:  " + context.preAuthenticateResponse.json()["Transaction"]["ResponseCode"])
+
+
+@when(u'{customerName} and {lang} are provided with {transactionID}')
+def step_impl(context, customerName, lang, transactionID):
+    user_name = context.userName
+    password = context.passWord
+
+    context.finalize_response = requests.post(context.url,
+                                              data=json.dumps(finalize(
+                                                  customerName, lang, transactionID, user_name, password), indent=4),
+                                              headers=context.headers)
+
+    context.generated_response_code = context.finalize_response.json()["Transaction"]["ResponseCode"]
+
+    print("Finalize API Description: " + context.finalize_response.json()["Transaction"]["ResponseDescription"])
+    print("Finalize API Response Code:  " + context.finalize_response.json()["Transaction"]["ResponseCode"])
