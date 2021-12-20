@@ -179,3 +179,26 @@ def motoTransAutoCapture(username, password, year, currency, orderName, lang, co
     }
 
     return body
+
+
+def track2(userName, password, currency, orderName, lang, orderId, channel, amount, hint, customer, cardTrack2):
+    body = {
+
+            "Authorization": {
+                "UserName": userName,
+                "Password": password,
+                "Currency": currency,
+                "OrderName": orderName,
+                "Language": lang,
+                "OrderID": orderId,
+                "Channel": channel,
+                "Amount": amount,
+                "TransactionHint": hint,
+                "Customer": customer,
+                "CardTrack2": cardTrack2
+            }
+        }
+
+    return body
+
+

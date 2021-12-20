@@ -112,13 +112,33 @@ def step_impl(context, year, currency, orderName, lang, code, orderId, channel, 
     password = context.passWord
 
     context.motoAutoCapture = requests.post(context.url,
-                                              data=json.dumps(
-                                                  motoTransAutoCapture(user_name, password, year, currency, orderName,
-                                                                       lang, code, orderId, channel, month, amount,
-                                                                       cardNumber, hint, customer), indent=4),
-                                              headers=context.headers)
+                                            data=json.dumps(
+                                                motoTransAutoCapture(user_name, password, year, currency, orderName,
+                                                                     lang, code, orderId, channel, month, amount,
+                                                                     cardNumber, hint, customer), indent=4),
+                                            headers=context.headers)
 
     context.generated_response_code = context.motoAutoCapture.json()["Transaction"]["ResponseCode"]
 
-    print("Moto Transaction Auto Capture API Description: " + context.motoAutoCapture.json()["Transaction"]["ResponseDescription"])
+    print("Moto Transaction Auto Capture API Description: " + context.motoAutoCapture.json()["Transaction"]
+                                                                                                ["ResponseDescription"])
     print("Moto Transaction Auto Capture:  " + context.motoAutoCapture.json()["Transaction"]["ResponseCode"])
+
+
+@when(u'{currency} and {orderName} with {lang} for {orderId} along {channel} for {amount} and {hint} the {customer} '
+      u'for {cardTrack2}')
+def step_impl(context, currency, orderName, lang, orderId, channel, amount, hint, customer, cardTrack2):
+    user_name = context.userName
+    password = context.passWord
+
+    context.track2 = requests.post(context.url,
+                                   data=json.dumps(
+                                       track2(user_name, password, currency, orderName, lang,
+                                              orderId, channel, amount, hint, customer,
+                                              cardTrack2), indent=4),
+                                   headers=context.headers)
+
+    context.generated_response_code = context.track2.json()["Transaction"]["ResponseCode"]
+
+    print("Track 2 API Description: " + context.track2.json()["Transaction"]["ResponseDescription"])
+    print("Track 2 Auto Capture:  " + context.track2.json()["Transaction"]["ResponseCode"])

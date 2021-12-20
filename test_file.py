@@ -36,9 +36,14 @@ headers = {"Content-Type": "application/json",
 # registerMerchant_response = requests.post(url, data=json.dumps(finalize("Demo Merchant", "en", "216063158375",
 # "Imtiaz", "ProgramProgram99"), indent=4), headers=headers)
 
-registerMerchant_response = requests.post(url, data=json.dumps(motoTransAutoCapture("Imtiaz","ProgramProgram99","2022","AED","Pinger-NBAD","en","123","990000227113719","W","11","10","4111111111111111","CPT:Y;","Demo Merchant"),
-                                                               indent=4), headers=headers)
+# registerMerchant_response = requests.post(url, data=json.dumps(motoTransAutoCapture("Imtiaz","ProgramProgram99",
+# "2022","AED","Pinger-NBAD","en","123","990000227113719","W","11","10","4111111111111111","CPT:Y;","Demo Merchant"),
+# indent=4), headers=headers)
 
+registerMerchant_response = requests.post(url, data=json.dumps(
+    track2("Imtiaz", "ProgramProgram99", "AED", "Pinger-NBAD", "en", "990000227113719", "T", "10",
+           "CPT:Y","Demo Merchant", ";4111111111111111=16112011000089600000?"),
+    indent=4), headers=headers)
 
 print("Description: " + registerMerchant_response.json()["Transaction"]["ResponseDescription"])
 print("Response Code:  " + registerMerchant_response.json()["Transaction"]["ResponseCode"])
