@@ -37,3 +37,12 @@
       Examples:
       | customerName  | lang  | transactionID  |
       | Demo Merchant | en    | 216063158375   |
+
+    @motoAutoCapture
+    Scenario Outline: Moto Transaction Auto Capture
+      Given API headers are provided
+      When <year> and <currency> along <orderName> and <lang> combined <code> and <orderId> is <channel> and <month> along <amount> also <cardNumber> for <hint> the <customer>
+      Then Status code is returned
+      Examples:
+      | year  | currency  | orderName  | lang  | code  | orderId          | channel | month | amount  | cardNumber      | hint    | customer     |
+      | 2022  | AED       | Pinger-NBAD|  en   |  123  | 990000227113719  | W       | 11    | 10      |4111111111111111 | CPT:Y;  | Demo Merchant|

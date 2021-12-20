@@ -21,20 +21,23 @@ headers = {"Content-Type": "application/json",
 
 # import pdb pdb.set_trace()
 
-registerMerchant_response = requests.post(url, data=json.dumps(preAuthenticate("60204", "92.97.46.218",
-                                                                               "BBC51CD1-8DB7-4DC3-A285-A3DC428A73C0",
-                                                                               "195.229.84.28", "443", "EPG-MS-SET-I",
-                                                                               "/DevPaymentEx/MerchantPay"
-                                                                               "/GetPreAuthData", "En", "Web",
-                                                                               "250384623618", "10", "Imtiaz",
-                                                                               "ProgramProgram99", "AED", "C",
-                                                                               "4111111111111111",
-                                                                               "2022", "02", "123", "10", "2",
-                                                                               "20211214125651", "Demo Merchant New"),
-                                                               indent=4), headers=headers)
+# registerMerchant_response = requests.post(url, data=json.dumps(preAuthenticate("60204", "92.97.46.218",
+#                                                                                "BBC51CD1-8DB7-4DC3-A285-A3DC428A73C0",
+#                                                                                "195.229.84.28", "443", "EPG-MS-SET-I",
+#                                                                                "/DevPaymentEx/MerchantPay"
+#                                                                                "/GetPreAuthData", "En", "Web",
+#                                                                                "250384623618", "10", "Imtiaz",
+#                                                                                "ProgramProgram99", "AED", "C",
+#                                                                                "4111111111111111",
+#                                                                                "2022", "02", "123", "10", "2",
+#                                                                                "20211214125651", "Demo Merchant New"),
+#                                                                indent=4), headers=headers)
 
 # registerMerchant_response = requests.post(url, data=json.dumps(finalize("Demo Merchant", "en", "216063158375",
 # "Imtiaz", "ProgramProgram99"), indent=4), headers=headers)
+
+registerMerchant_response = requests.post(url, data=json.dumps(motoTransAutoCapture("Imtiaz","ProgramProgram99","2022","AED","Pinger-NBAD","en","123","990000227113719","W","11","10","4111111111111111","CPT:Y;","Demo Merchant"),
+                                                               indent=4), headers=headers)
 
 
 print("Description: " + registerMerchant_response.json()["Transaction"]["ResponseDescription"])

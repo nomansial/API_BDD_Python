@@ -155,3 +155,27 @@ def finalize(customerName, lang, transactionID, username, password):
     }
 
     return body
+
+
+def motoTransAutoCapture(username, password, year, currency, orderName, lang, code, orderId, channel, month, amount,
+                         cardNumber, hint, customer):
+    body = {
+        "Authorization": {
+            "UserName": username,
+            "Password": password,
+            "ExpiryYear": year,
+            "Currency": currency,
+            "OrderName": orderName,
+            "Language": lang,
+            "VerifyCode": code,
+            "OrderID": orderId,
+            "Channel": channel,
+            "ExpiryMonth": month,
+            "Amount": amount,
+            "CardNumber": cardNumber,
+            "TransactionHint": hint,
+            "Customer": customer
+        }
+    }
+
+    return body

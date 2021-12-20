@@ -102,3 +102,23 @@ def step_impl(context, customerName, lang, transactionID):
 
     print("Finalize API Description: " + context.finalize_response.json()["Transaction"]["ResponseDescription"])
     print("Finalize API Response Code:  " + context.finalize_response.json()["Transaction"]["ResponseCode"])
+
+
+@when(u'{year} and {currency} along {orderName} and {lang} combined {code} and {orderId} is {channel} and {month} '
+      u'along {amount} also {cardNumber} for {hint} the {customer}')
+def step_impl(context, year, currency, orderName, lang, code, orderId, channel, month, amount, cardNumber, hint,
+              customer):
+    user_name = context.userName
+    password = context.passWord
+
+    context.motoAutoCapture = requests.post(context.url,
+                                              data=json.dumps(
+                                                  motoTransAutoCapture(user_name, password, year, currency, orderName,
+                                                                       lang, code, orderId, channel, month, amount,
+                                                                       cardNumber, hint, customer), indent=4),
+                                              headers=context.headers)
+
+    context.generated_response_code = context.motoAutoCapture.json()["Transaction"]["ResponseCode"]
+
+    print("Moto Transaction Auto Capture API Description: " + context.motoAutoCapture.json()["Transaction"]["ResponseDescription"])
+    print("Moto Transaction Auto Capture:  " + context.motoAutoCapture.json()["Transaction"]["ResponseCode"])
