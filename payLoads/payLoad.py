@@ -200,5 +200,3 @@ def track2(userName, password, currency, orderName, lang, orderId, channel, amou
         }
 
     return body
-
-

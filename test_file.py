@@ -13,11 +13,11 @@ headers = {"Content-Type": "application/json",
            "Accept": "application/json"
            }
 
-# registerMerchant_response = requests.post(url, data=json.dumps(paymentQuery("2.0", "en", "28742", "86.96.250.27",
-#                                                                             "195.229.84.28", "443", "EPG-MS-SET-I",
-#                                                                             "Web", "284304470226", "Imtiaz",
-#                                                                             "ProgramProgram99"), indent=4),
-#                                           headers=headers)
+registerMerchant_response = requests.post(url, data=json.dumps(paymentQuery("2.0", "en", "28742", "86.96.250.27",
+                                                                            "195.229.84.28", "443", "EPG-MS-SET-I",
+                                                                            "Web", "238738648673", "Imtiaz",
+                                                                            "ProgramProgram99"), indent=4),
+                                          headers=headers)
 
 # import pdb pdb.set_trace()
 
@@ -40,10 +40,12 @@ headers = {"Content-Type": "application/json",
 # "2022","AED","Pinger-NBAD","en","123","990000227113719","W","11","10","4111111111111111","CPT:Y;","Demo Merchant"),
 # indent=4), headers=headers)
 
-registerMerchant_response = requests.post(url, data=json.dumps(
-    track2("Imtiaz", "ProgramProgram99", "AED", "Pinger-NBAD", "en", "990000227113719", "T", "10",
-           "CPT:Y","Demo Merchant", ";4111111111111111=16112011000089600000?"),
-    indent=4), headers=headers)
+# registerMerchant_response = requests.post(url, data=json.dumps(
+#     track2("Imtiaz", "ProgramProgram99", "AED", "Pinger-NBAD", "en", "990000227113719", "T", "10",
+#            "CPT:Y","Demo Merchant", ";4111111111111111=16112011000089600000?"),
+#     indent=4), headers=headers)
 
-print("Description: " + registerMerchant_response.json()["Transaction"]["ResponseDescription"])
-print("Response Code:  " + registerMerchant_response.json()["Transaction"]["ResponseCode"])
+print("Description: " + registerMerchant_response.json()["PaymentData"]["ResponseDescription"])
+print("Response Code:  " + registerMerchant_response.json()["PaymentData"]["ResponseCode"])
+
+

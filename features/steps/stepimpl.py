@@ -25,6 +25,7 @@ def step_impl(context):
     u'Channel} {Amount} {transactionHint} {Customer}')
 def step_impl(context, Currency, OrderName, order_info, return_Path, orderID, extraData, Channel, Amount,
               transactionHint, Customer):
+    global transaction_id
     user_name = context.userName
     password = context.passWord
 
@@ -37,27 +38,32 @@ def step_impl(context, Currency, OrderName, order_info, return_Path, orderID, ex
                                                       headers=context.headers)
 
     context.generated_response_code = context.registerMerchant_response.json()["Transaction"]["ResponseCode"]
+    context.generated_description = context.registerMerchant_response.json()["Transaction"]["ResponseDescription"]
+    transaction_id = context.registerMerchant_response.json()["Transaction"]["TransactionID"]
 
     print("Register API Description: " + context.registerMerchant_response.json()["Transaction"]["ResponseDescription"])
     print("Register API Response Code:  " + context.registerMerchant_response.json()["Transaction"]["ResponseCode"])
+    print("Registration ID: " + transaction_id)
 
 
 @then(u'status code is returned')
 def step_impl(context):
     assert_that(context.generated_response_code).is_equal_to("0")
+    assert_that(context.generated_description).is_equal_to("Request Processed Successfully")
 
 
-@when(u'{Version} provided {Language} selected {Port} number {AddressIP} selected {ServerIP} with {ServerPort} and {'
-      u'Machine} for {Channel} and {TransactionID}')
-def step_impl(context, Version, Language, Port, AddressIP, ServerIP, ServerPort, Machine, Channel, TransactionID):
+@when(u'for {Version} provided {Language} selected {Port} number {AddressIP} selected {ServerIP} with {ServerPort} '
+      u'and {Machine} for {Channel}')
+def step_impl(context, Version, Language, Port, AddressIP, ServerIP, ServerPort, Machine, Channel):
     user_name = context.userName
     password = context.passWord
 
     context.paymentQueryResponse = requests.post(context.url, data=json.dumps(
-        paymentQuery(Version, Language, Port, AddressIP, ServerIP, ServerPort, Machine, Channel, TransactionID,
+        paymentQuery(Version, Language, Port, AddressIP, ServerIP, ServerPort, Machine, Channel, transaction_id,
                      user_name, password), indent=4), headers=context.headers)
 
     context.generated_response_code = context.paymentQueryResponse.json()["PaymentData"]["ResponseCode"]
+    context.generated_description = context.paymentQueryResponse.json()["PaymentData"]["ResponseDescription"]
 
     print("Payment Page Query API Description: " + context.paymentQueryResponse.json()["PaymentData"]["Response"
                                                                                                       "Description"])
@@ -66,39 +72,42 @@ def step_impl(context, Version, Language, Port, AddressIP, ServerIP, ServerPort,
 
 
 @when(u'{Port} and {clientIp} along {Identifier} with {ServerIP} and {ServerPort} and {machine} with {url} when {'
-      u'lang} is {channel} then {transactionId} can be {amount} and {currency} so that {instrument} some with {'
-      u'cardnumber} year {year} month {month} code {code} and the {purchaseAmount} along {purchaseExponent} and {'
-      u'purchaseDate} with {merchantName}')
+      u'lang} is {channel} then {amount} and {currency} so that {instrument} some with {cardnumber} year {year} month '
+      u'{month} code {code} and the {purchaseAmount} along {purchaseExponent} and {purchaseDate} with {merchantName}')
 def step_impl(context, clientPort, clientIp, Identifier, ServerIP, ServerPort, machine, url, language, channel,
-              transactionId, amount, currency, instrument, cardnumber, year, month, code,
+              amount, currency, instrument, cardnumber, year, month, code,
               purchaseAmount, purchaseExponent, purchaseDate, merchantName):
     userName = context.userName
     password = context.passWord
 
     context.preAuthenticateResponse = requests.post(context.url, data=json.dumps(
         preAuthenticate(clientPort, clientIp, Identifier, ServerIP, ServerPort, machine, url, language, channel,
-                        transactionId, amount, userName, password, currency, instrument, cardnumber, year, month, code,
+                        transaction_id, amount, userName, password, currency, instrument, cardnumber, year,
+                        month, code,
                         purchaseAmount, purchaseExponent, purchaseDate, merchantName), indent=4),
                                                     headers=context.headers)
 
     context.generated_response_code = context.preAuthenticateResponse.json()["Transaction"]["ResponseCode"]
+    context.generated_description = context.preAuthenticateResponse.json()["Transaction"]["ResponseDescription"]
 
     print(
         "Pre Authenticate Description: " + context.preAuthenticateResponse.json()["Transaction"]["ResponseDescription"])
     print("Pre Authenticate Response Code:  " + context.preAuthenticateResponse.json()["Transaction"]["ResponseCode"])
 
 
-@when(u'{customerName} and {lang} are provided with {transactionID}')
-def step_impl(context, customerName, lang, transactionID):
+@when(u'so when {customerName} and {lang}')
+def step_impl(context, customerName, lang):
     user_name = context.userName
     password = context.passWord
 
     context.finalize_response = requests.post(context.url,
                                               data=json.dumps(finalize(
-                                                  customerName, lang, transactionID, user_name, password), indent=4),
+                                                  customerName, lang, transaction_id, user_name, password),
+                                                  indent=4),
                                               headers=context.headers)
 
     context.generated_response_code = context.finalize_response.json()["Transaction"]["ResponseCode"]
+    context.generated_description = context.finalize_response.json()["Transaction"]["ResponseDescription"]
 
     print("Finalize API Description: " + context.finalize_response.json()["Transaction"]["ResponseDescription"])
     print("Finalize API Response Code:  " + context.finalize_response.json()["Transaction"]["ResponseCode"])
@@ -119,9 +128,10 @@ def step_impl(context, year, currency, orderName, lang, code, orderId, channel, 
                                             headers=context.headers)
 
     context.generated_response_code = context.motoAutoCapture.json()["Transaction"]["ResponseCode"]
+    context.generated_description = context.motoAutoCapture.json()["Transaction"]["ResponseDescription"]
 
     print("Moto Transaction Auto Capture API Description: " + context.motoAutoCapture.json()["Transaction"]
-                                                                                                ["ResponseDescription"])
+    ["ResponseDescription"])
     print("Moto Transaction Auto Capture:  " + context.motoAutoCapture.json()["Transaction"]["ResponseCode"])
 
 
@@ -139,6 +149,7 @@ def step_impl(context, currency, orderName, lang, orderId, channel, amount, hint
                                    headers=context.headers)
 
     context.generated_response_code = context.track2.json()["Transaction"]["ResponseCode"]
+    context.generated_description = context.track2.json()["Transaction"]["ResponseDescription"]
 
     print("Track 2 API Description: " + context.track2.json()["Transaction"]["ResponseDescription"])
     print("Track 2 Auto Capture:  " + context.track2.json()["Transaction"]["ResponseCode"])
