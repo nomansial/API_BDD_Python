@@ -22,17 +22,17 @@
     @Dunedin
     Scenario Outline: Pre Authenticate API
       Given API headers are provided
-      When <Port> and <clientIp> along <Identifier> with <ServerIP> and <ServerPort> and <machine> with <url> when <lang> is <channel> then <amount> and <currency> so that <instrument> some with <cardnumber> year <year> month <month> code <code> and the <purchaseAmount> along <purchaseExponent> and <purchaseDate> with <merchantName>
+      When <port_num> and <clientIp> along <Identifier> with <ServerIP> and <ServerPort> and <machine> with <url> when <lang> is <channel> for <amount> and <currency> so that <instrument> some with <cardnumber> year <year> month <month> code <code> and the <purchaseAmount> along <purchaseExponent> and <purchaseDate> with <merchantName>
       Then Status code is returned
       Examples:
-      | Port  | clientIp    | Identifier                            | ServerIP      |  ServerPort  | machine       | url                                      | lang  | channel | amount | currency | instrument  | cardnumber        | year | month  | code | purchaseAmount  | purchaseExponent | purchaseDate   | merchantName      |
-      | 60204 |92.97.46.218 | BBC51CD1-8DB7-4DC3-A285-A3DC428A73C0  | 195.229.84.28 | 443          | EPG-MS-SET-I  | /DevPaymentEx/MerchantPay/GetPreAuthData | En    | Web     | 10     | AED      | C           | 4111111111111111  | 2022 | 02     |123   | 10              | 2                | 20211214125651 | Demo Merchant New |
+      | port_num  | clientIp    | Identifier                            | ServerIP      |  ServerPort  | machine       | url                                      | lang  | channel | amount | currency | instrument  | cardnumber        | year | month  | code | purchaseAmount  | purchaseExponent | purchaseDate   | merchantName      |
+      | 60204     |92.97.46.218 | BBC51CD1-8DB7-4DC3-A285-A3DC428A73C0  | 195.229.84.28 | 443          | EPG-MS-SET-I  | /DevPaymentEx/MerchantPay/GetPreAuthData | En    | Web     | 10      | AED      | C           | 4111111111111111  | 2022 | 02     |123   | 10              | 2                | 20211214125651 | Demo Merchant New |
 
 
     @Dunedin
     Scenario Outline: Finalize call API
       Given API headers are provided
-      When so when <customerName> and <lang>
+      When so when <customerName> and <lang> are provided
       Then Status code is returned
       Examples:
       | customerName  | lang  |

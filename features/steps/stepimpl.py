@@ -1,6 +1,7 @@
 import json
 
 import requests
+import pdb
 from assertpy import assert_that
 from behave import *
 
@@ -71,17 +72,15 @@ def step_impl(context, Version, Language, Port, AddressIP, ServerIP, ServerPort,
                                                                                                          "Code"])
 
 
-@when(u'{Port} and {clientIp} along {Identifier} with {ServerIP} and {ServerPort} and {machine} with {url} when {'
-      u'lang} is {channel} then {amount} and {currency} so that {instrument} some with {cardnumber} year {year} month '
-      u'{month} code {code} and the {purchaseAmount} along {purchaseExponent} and {purchaseDate} with {merchantName}')
-def step_impl(context, clientPort, clientIp, Identifier, ServerIP, ServerPort, machine, url, language, channel,
-              amount, currency, instrument, cardnumber, year, month, code,
-              purchaseAmount, purchaseExponent, purchaseDate, merchantName):
+@when(u'{port_num} and {clientIp} along {Identifier} with {ServerIP} and {ServerPort} and {machine} with {url} when {lang} is {channel} for {amount} and {currency} so that {instrument} some with {cardnumber} year {year} month {month} code {code} and the {purchaseAmount} along {purchaseExponent} and {purchaseDate} with {merchantName}')
+def step_impl(context, port_num, clientIp, Identifier, ServerIP, ServerPort, machine, url, lang, channel,
+              amount, currency, instrument, cardnumber, year, month, code, purchaseAmount,
+              purchaseExponent, purchaseDate, merchantName):
     userName = context.userName
     password = context.passWord
 
     context.preAuthenticateResponse = requests.post(context.url, data=json.dumps(
-        preAuthenticate(clientPort, clientIp, Identifier, ServerIP, ServerPort, machine, url, language, channel,
+        preAuthenticate(port_num, clientIp, Identifier, ServerIP, ServerPort, machine, url, lang, channel,
                         transaction_id, amount, userName, password, currency, instrument, cardnumber, year,
                         month, code,
                         purchaseAmount, purchaseExponent, purchaseDate, merchantName), indent=4),
@@ -95,7 +94,7 @@ def step_impl(context, clientPort, clientIp, Identifier, ServerIP, ServerPort, m
     print("Pre Authenticate Response Code:  " + context.preAuthenticateResponse.json()["Transaction"]["ResponseCode"])
 
 
-@when(u'so when {customerName} and {lang}')
+@when(u'so when {customerName} and {lang} are provided')
 def step_impl(context, customerName, lang):
     user_name = context.userName
     password = context.passWord
