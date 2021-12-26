@@ -13,6 +13,11 @@ url = config['API']['endpoint']
 headers = {"Content-Type": "application/json",
            "Accept": "application/json"
            }
+
+registerMerchant_response = requests.post(url, data=json.dumps(
+    registerMerchant('AED', "Test Java", "test", "http://demo-ipg.comtrust.ae/test", "TEST{Y}{m}{d}",
+                     "I am in ExtraData", "", "10", "CPT:N", "Demo Merchant", "Imtiaz", "ProgramProgram99"), indent=4),
+                                          headers=headers)
 # pdb.set_trace()
 # registerMerchant_response = requests.post(url, data=json.dumps(paymentQuery("2.0", "en", "28742", "86.96.250.27",
 #                                                                             "195.229.84.28", "443", "EPG-MS-SET-I",
@@ -21,17 +26,17 @@ headers = {"Content-Type": "application/json",
 #                                           headers=headers)
 
 
-registerMerchant_response = requests.post(url, data=json.dumps(preAuthenticate("60204", "92.97.46.218",
-                                                                               "BBC51CD1-8DB7-4DC3-A285-A3DC428A73C0",
-                                                                               "195.229.84.28", "443", "EPG-MS-SET-I",
-                                                                               "/DevPaymentEx/MerchantPay"
-                                                                               "/GetPreAuthData", "En", "Web",
-                                                                               "273607407838", "10", "Imtiaz",
-                                                                               "ProgramProgram99", "AED", "C",
-                                                                               "4111111111111111",
-                                                                               "2022", "02", "123", "10", "2",
-                                                                               "20211214125651", "Demo Merchant New"),
-                                                               indent=4), headers=headers)
+# registerMerchant_response = requests.post(url, data=json.dumps(preAuthenticate("60204", "92.97.46.218",
+#                                                                                "BBC51CD1-8DB7-4DC3-A285-A3DC428A73C0",
+#                                                                                "195.229.84.28", "443", "EPG-MS-SET-I",
+#                                                                                "/DevPaymentEx/MerchantPay"
+#                                                                                "/GetPreAuthData", "En", "Web",
+#                                                                                "273607407838", "10", "Imtiaz",
+#                                                                                "ProgramProgram99", "AED", "C",
+#                                                                                "4111111111111111",
+#                                                                                "2022", "02", "123", "10", "2",
+#                                                                                "20211214125651", "Demo Merchant New"),
+#                                                                indent=4), headers=headers)
 
 # registerMerchant_response = requests.post(url, data=json.dumps(finalize("Demo Merchant", "en", "216063158375",
 # "Imtiaz", "ProgramProgram99"), indent=4), headers=headers)
@@ -44,6 +49,19 @@ registerMerchant_response = requests.post(url, data=json.dumps(preAuthenticate("
 #     track2("Imtiaz", "ProgramProgram99", "AED", "Pinger-NBAD", "en", "990000227113719", "T", "10",
 #            "CPT:Y","Demo Merchant", ";4111111111111111=16112011000089600000?"),
 #     indent=4), headers=headers)
+# print(registerMerchant_response.text)
 
-print("Description: " + registerMerchant_response.json()["Transaction"]["ResponseDescription"])
-print("Response Code:  " + registerMerchant_response.json()["Transaction"]["ResponseCode"])
+
+d = registerMerchant_response.json()
+print(type(d))
+print(d["Transaction"]["TransactionID"])
+if d["Transaction"]["TransactionID"] in d:
+    print(d["Transaction"]["TransactionID"])
+else:
+    print("No")
+
+# if "TransactionID" in dictionary:
+#     print(registerMerchant_response.json()["Transaction"]["TransactionID"])
+# else:
+#     print("no")
+# print("Response Code:  " + registerMerchant_response.json()["Transaction"]["ResponseCode"])

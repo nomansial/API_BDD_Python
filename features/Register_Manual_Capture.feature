@@ -10,6 +10,7 @@
       | Currency |  OrderName | order_info    | return_Path                       | orderID       | extraData          |  Channel |  Amount | transactionHint | Customer       |
       | AED      |  Test Java | test          | http://demo-ipg.comtrust.ae/test  | TEST{Y}{m}{d} | I  am in ExtraData |  Web     |  10     | CPT:N           | Demo Merchant  |
 
+
     @Dunedin
     Scenario Outline: Payment Page Query API
       Given API headers are provided

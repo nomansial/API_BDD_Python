@@ -21,9 +21,8 @@ def step_impl(context):
                        }
 
 
-@when(
-    u'User executed API with {Currency} {OrderName} {order_info} and {return_Path} {orderID} {extraData} with {'
-    u'Channel} {Amount} {transactionHint} {Customer}')
+@when(u'User executed API with {Currency} {OrderName} {order_info} and {return_Path} {orderID} {extraData} with {'
+      u'Channel} {Amount} {transactionHint} {Customer}')
 def step_impl(context, Currency, OrderName, order_info, return_Path, orderID, extraData, Channel, Amount,
               transactionHint, Customer):
     global transaction_id
@@ -40,17 +39,21 @@ def step_impl(context, Currency, OrderName, order_info, return_Path, orderID, ex
 
     context.generated_response_code = context.registerMerchant_response.json()["Transaction"]["ResponseCode"]
     context.generated_description = context.registerMerchant_response.json()["Transaction"]["ResponseDescription"]
-    transaction_id = context.registerMerchant_response.json()["Transaction"]["TransactionID"]
+    if len(context.generated_response_code) == 1:
+        transaction_id = context.registerMerchant_response.json()["Transaction"]["TransactionID"]
+        print("Registration ID: " + transaction_id)
+    else:
+        print("Transaction ID not generated")
 
-    print("Register API Description: " + context.registerMerchant_response.json()["Transaction"]["ResponseDescription"])
-    print("Register API Response Code:  " + context.registerMerchant_response.json()["Transaction"]["ResponseCode"])
-    print("Registration ID: " + transaction_id)
+    print("Register API Description:" + context.generated_description)
+    print("Register API Response Code:" + context.generated_response_code)
+    print("\n")
 
 
 @then(u'status code is returned')
 def step_impl(context):
-    assert_that(context.generated_response_code).is_equal_to("0")
     assert_that(context.generated_description).is_equal_to("Request Processed Successfully")
+    assert_that(context.generated_response_code).is_equal_to("0")
 
 
 @when(u'for {Version} provided {Language} selected {Port} number {AddressIP} selected {ServerIP} with {ServerPort} '
@@ -70,9 +73,12 @@ def step_impl(context, Version, Language, Port, AddressIP, ServerIP, ServerPort,
                                                                                                       "Description"])
     print("Payment Page Query API Response Code:  " + context.paymentQueryResponse.json()["PaymentData"]["Response"
                                                                                                          "Code"])
+    print("\n")
 
 
-@when(u'{port_num} and {clientIp} along {Identifier} with {ServerIP} and {ServerPort} and {machine} with {url} when {lang} is {channel} for {amount} and {currency} so that {instrument} some with {cardnumber} year {year} month {month} code {code} and the {purchaseAmount} along {purchaseExponent} and {purchaseDate} with {merchantName}')
+@when(u'{port_num} and {clientIp} along {Identifier} with {ServerIP} and {ServerPort} and {machine} with {url} when {'
+      u'lang} is {channel} for {amount} and {currency} so that {instrument} some with {cardnumber} year {year} month '
+      u'{month} code {code} and the {purchaseAmount} along {purchaseExponent} and {purchaseDate} with {merchantName}')
 def step_impl(context, port_num, clientIp, Identifier, ServerIP, ServerPort, machine, url, lang, channel,
               amount, currency, instrument, cardnumber, year, month, code, purchaseAmount,
               purchaseExponent, purchaseDate, merchantName):
@@ -92,6 +98,7 @@ def step_impl(context, port_num, clientIp, Identifier, ServerIP, ServerPort, mac
     print(
         "Pre Authenticate Description: " + context.preAuthenticateResponse.json()["Transaction"]["ResponseDescription"])
     print("Pre Authenticate Response Code:  " + context.preAuthenticateResponse.json()["Transaction"]["ResponseCode"])
+    print("\n")
 
 
 @when(u'so when {customerName} and {lang} are provided')
@@ -110,6 +117,7 @@ def step_impl(context, customerName, lang):
 
     print("Finalize API Description: " + context.finalize_response.json()["Transaction"]["ResponseDescription"])
     print("Finalize API Response Code:  " + context.finalize_response.json()["Transaction"]["ResponseCode"])
+    print("\n")
 
 
 @when(u'{year} and {currency} along {orderName} and {lang} combined {code} and {orderId} is {channel} and {month} '
@@ -132,6 +140,7 @@ def step_impl(context, year, currency, orderName, lang, code, orderId, channel, 
     print("Moto Transaction Auto Capture API Description: " + context.motoAutoCapture.json()["Transaction"]
     ["ResponseDescription"])
     print("Moto Transaction Auto Capture:  " + context.motoAutoCapture.json()["Transaction"]["ResponseCode"])
+    print("\n")
 
 
 @when(u'{currency} and {orderName} with {lang} for {orderId} along {channel} for {amount} and {hint} the {customer} '
