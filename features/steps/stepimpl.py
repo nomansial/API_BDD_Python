@@ -29,10 +29,36 @@ def step_impl(context, Currency, OrderName, order_info, return_Path, orderID, ex
     user_name = context.userName
     password = context.passWord
 
+    if return_Path == 'blank':
+        blank_path = ""
+    else:
+        blank_path = return_Path
+
+    if Currency == 'blank':
+        blank_currency = ""
+    else:
+        blank_currency = Currency
+
+    if Channel == 'blank':
+        blank_channel = ""
+    else:
+        blank_channel = Channel
+
+    if OrderName == 'blank':
+        blank_order = ""
+    else:
+        blank_order = OrderName
+
+    if Amount == 'blank':
+        blank_amount = ""
+    else:
+        blank_amount = Amount
+
     context.registerMerchant_response = requests.post(context.url,
                                                       data=json.dumps(
-                                                          registerMerchant(Currency, OrderName, order_info, return_Path,
-                                                                           orderID, extraData, Channel, Amount,
+                                                          registerMerchant(blank_currency, blank_order, order_info,
+                                                                           blank_path,
+                                                                           orderID, extraData, blank_channel, blank_amount,
                                                                            transactionHint, Customer, user_name,
                                                                            password), indent=4),
                                                       headers=context.headers)
@@ -45,8 +71,8 @@ def step_impl(context, Currency, OrderName, order_info, return_Path, orderID, ex
     else:
         print("Transaction ID not generated")
 
-    print("Register API Description:" + context.generated_description)
-    print("Register API Response Code:" + context.generated_response_code)
+    print("Register API Description: " + context.generated_description)
+    print("Register API Response Code: " + context.generated_response_code)
     print("\n")
 
 

@@ -1,7 +1,7 @@
 
   Feature: Manual Merchant Registration
 
-    @Dunedin
+    @Test
     Scenario Outline: Register merchant API
       Given API headers are provided
       When User executed API with <Currency> <OrderName> <order_info> and <return_Path> <orderID> <extraData> with <Channel> <Amount> <transactionHint> <Customer>
@@ -9,6 +9,17 @@
       Examples:
       | Currency |  OrderName | order_info    | return_Path                       | orderID       | extraData          |  Channel |  Amount | transactionHint | Customer       |
       | AED      |  Test Java | test          | http://demo-ipg.comtrust.ae/test  | TEST{Y}{m}{d} | I  am in ExtraData |  Web     |  10     | CPT:N           | Demo Merchant  |
+	  | PKT      |  Test Java | test          | http://demo-ipg.comtrust.ae/test  | TEST{Y}{m}{d} | I  am in ExtraData |  Web     |  10     | CPT:N           | Demo Merchant  |
+	  | AED      |  Test Java | test          | http://demo-ipg.comtrust.ae/test  | TEST{Y}{m}{d} | I  am in ExtraData |  Web     |  0	    | CPT:N           | Demo Merchant  |
+	  | AED      |  Test Java | test          | http://demo-ipg.comtrust.ae/test  | TEST{Y}{m}{d} | I  am in ExtraData |  Web     |  1.1	| CPT:N           | Demo Merchant  |
+	  | AED      |  Test Java | test          | http://demo-ipg.comtrust.ae/test  | TEST{Y}{m}{d} | I  am in ExtraData |  KIN     |  10		| CPT:N           | Demo Merchant  |
+	  | AED      |  Test Java | test          | http://demo-ipg.comtrust.ae/test  | TEST{Y}{m}{d} | I  am in ExtraData |  Web     |  10     | CPT:N           | Demo		   |
+	  | AED      |  Test Java | test          | ://demo-ipg.comtrust.ae/test      | TEST{Y}{m}{d} | I  am in ExtraData |  Web     |  10     | CPT:N           | Demo Merchant  |
+	  | AED   	 |  Test Java | test          | blank 							  | TEST{Y}{m}{d} | I  am in ExtraData |  Web     |  10     | CPT:N           | Demo Merchant  |
+	  | blank    |  Test Java | test          | http://demo-ipg.comtrust.ae/test  | TEST{Y}{m}{d} | I  am in ExtraData |  Web     |  10     | CPT:N           | Demo Merchant  |
+	  | AED   	 |  Test Java | test          | http://demo-ipg.comtrust.ae/test  | TEST{Y}{m}{d} | I  am in ExtraData |  blank   |  10     | CPT:N           | Demo Merchant  |
+	  | AED  	 |  blank 	  | test          | http://demo-ipg.comtrust.ae/test  | TEST{Y}{m}{d} | I  am in ExtraData |  Web     |  10     | CPT:N           | Demo Merchant  |
+	  | AED    	 |  Test Java | test          | http://demo-ipg.comtrust.ae/test  | TEST{Y}{m}{d} | I  am in ExtraData |  Web     |  blank  | CPT:N           | Demo Merchant  |
 
 
     @Dunedin
